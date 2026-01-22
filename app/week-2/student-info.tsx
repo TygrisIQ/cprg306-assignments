@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function StudentInfo() {
+ export default function StudentInfo() {
   return (
     <div>
       <p>Youssif Al-Halawche (000979657)</p>
