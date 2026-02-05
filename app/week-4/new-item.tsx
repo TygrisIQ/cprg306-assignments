@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 export default function NewItem() {
@@ -10,22 +9,17 @@ export default function NewItem() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (!name || name.length < 2) {
       alert("Name must be at least 2 characters long.");
       return;
     }
-
     const item = {
       name,
       quantity,
       category,
     };
-
     console.log(item);
-    
     alert(`Added Item: ${name}, Quantity: ${quantity}, Category: ${category}`);
-
     setName("");
     setQuantity(1);
     setCategory("produce");
@@ -39,16 +33,20 @@ export default function NewItem() {
           type="text"
           placeholder="Item name"
           required
-          className={`w-full mt-1 border-2 p-2 rounded-lg text-black bg-white ${nameTouched && name.length === 0 ? "border-red-500 bg-red-100" : "border-gray-300"}`}
+          className={`w-full mt-1 border-2 p-2 rounded-lg text-black bg-white ${
+            nameTouched && name.length < 2 ? "border-red-500 bg-red-100" : "border-gray-300"
+          }`}
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={() => setNameTouched(true)}
-        />
-        {nameTouched && name.length === 0 && (
-            <p className="text-red-500 text-xs mt-1">Name is required.</p>
+        onFocus={()=> {
+          setNameTouched(false)}}/>
+        {nameTouched && (
+          <p className="text-red-500 text-xs mt-1">
+            {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
+          </p>
         )}
       </div>
-
       <div className="flex justify-between">
         <input
           type="number"
@@ -59,7 +57,6 @@ export default function NewItem() {
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
-
         <select
           className="ml-1 border-2 border-gray-300 p-2 rounded-lg text-black bg-white"
           value={category}
@@ -78,10 +75,9 @@ export default function NewItem() {
           <option value="other">Other</option>
         </select>
       </div>
-
       <button
         type="submit"
-        disabled={name.length === 0}
+        disabled={name.length < 2}
         className="w-full mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         +
