@@ -39,9 +39,7 @@ export default function NewItem() {
           type="text"
           placeholder="Item name"
           required
-          className={`w-full mt-1 border-2 p-2 rounded-lg text-black bg-white ${
-            nameTouched && name.length === 0 ? "border-red-500 bg-red-100" : "border-gray-300"
-          }`}
+          className={`w-full mt-1 border-2 p-2 rounded-lg text-black bg-white ${nameTouched && name.length === 0 ? "border-red-500 bg-red-100" : "border-gray-300"}`}
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={() => setNameTouched(true)}
