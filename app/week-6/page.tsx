@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import NewItem from "./new-item";
-import ItemList from "./item-list";
-import itemsData from "./items.json";
+import ItemList from "../week-5/item-list";
+import itemsData from "../week-5/items.json";
 
 export default function Page() {
   // Initialize state with the JSON data
