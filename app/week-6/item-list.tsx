@@ -2,12 +2,25 @@
 
 import { useState } from "react";
 import Item from "./item";
-import itemsData from "./items.json";
 
-export default function ItemList() {
+// Define the shape of an Item
+type ItemObj = {
+  id: string;
+  name: string;
+  quantity: number;
+  category: string;
+};
+
+// Define the prop types
+type ItemListProps = {
+  items: ItemObj[];
+};
+
+export default function ItemList({ items }: ItemListProps) {
   const [sortBy, setSortBy] = useState("name");
 
-  const sortedItems = [...itemsData].sort((a, b) => {
+  // Create a copy of the items prop before sorting to prevent mutating the prop
+  const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
     } else if (sortBy === "category") {
@@ -16,21 +29,21 @@ export default function ItemList() {
     return 0;
   });
 
-  const groupedItems = itemsData.reduce((acc, item) => {
+  const groupedItems = items.reduce((acc, item) => {
     const category = item.category;
     if (!acc[category]) {
       acc[category] = [];
     }
     acc[category].push(item);
     return acc;
-  }, {} as Record<string, typeof itemsData>);
+  }, {} as Record<string, ItemObj[]>);
 
   Object.keys(groupedItems).forEach((category) => {
     groupedItems[category].sort((a, b) => a.name.localeCompare(b.name));
   });
 
   return (
-    <div className="m-4">
+    <div className="m-4 max-w-sm mx-auto">
       {/* Sort Control Buttons */}
       <div className="flex gap-2 mb-4">
         <label className="text-white pt-2">Sort by: </label>
@@ -59,7 +72,7 @@ export default function ItemList() {
             sortBy === "grouped" ? "bg-orange-500" : "bg-orange-700"
           }`}
         >
-          Grouped Category
+          Grouped
         </button>
       </div>
 
@@ -71,9 +84,7 @@ export default function ItemList() {
             .sort() // Sort categories alphabetically
             .map((category) => (
               <div key={category}>
-                <h3 className="
-                capitalize text-xl 
-                font-bold text-orange-400 mt-4 mb-2 pl-4">
+                <h3 className="capitalize text-xl font-bold text-orange-400 mt-4 mb-2 pl-4">
                   {category}
                 </h3>
                 <ul>
@@ -90,7 +101,8 @@ export default function ItemList() {
             ))}
         </div>
       ) : (
-        <ul>
+        // Render Flat Sorted List
+        <ul className="pl-0">
           {sortedItems.map((item) => (
             <Item
               key={item.id}
