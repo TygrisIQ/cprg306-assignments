@@ -1,7 +1,8 @@
 "use client";
+
 import { useState } from "react";
 
-export default function NewItem() {
+export default function NewItem({ onAddItem }: { onAddItem: (item: any) => void }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
@@ -9,17 +10,10 @@ export default function NewItem() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!name || name.length < 2) {
-      alert("Name must be at least 2 characters long.");
-      return;
-    }
-    const item = {
-      name,
-      quantity,
-      category,
-    };
-    console.log(item);
-    alert(`Added Item: ${name}, Quantity: ${quantity}, Category: ${category}`);
+    if (name.length < 2) return;
+
+    onAddItem({ name, quantity, category });
+
     setName("");
     setQuantity(1);
     setCategory("produce");
@@ -39,26 +33,26 @@ export default function NewItem() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={() => setNameTouched(true)}
-        onFocus={()=> {
-          setNameTouched(false)}}/>
-        {nameTouched && (
+          onFocus={() => setNameTouched(false)}
+        />
+        {nameTouched && name.length < 2 && (
           <p className="text-red-500 text-xs mt-1">
             {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
           </p>
         )}
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4">
         <input
           type="number"
           min="1"
           max="99"
           required
-          className="w-20 ml-1 border-2 border-gray-300 p-2 rounded-lg text-black bg-white"
+          className="w-20 border-2 border-gray-300 p-2 rounded-lg text-black bg-white"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
         <select
-          className="ml-1 border-2 border-gray-300 p-2 rounded-lg text-black bg-white"
+          className="flex-1 border-2 border-gray-300 p-2 rounded-lg text-black bg-white"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
