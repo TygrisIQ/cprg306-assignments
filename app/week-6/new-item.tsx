@@ -50,11 +50,11 @@ export default function NewItem({ onAddItem }: NewItemProps) {
           onBlur={() => setNameTouched(true)}
           onFocus={() => setNameTouched(false)}
         />
-        {nameTouched && (
-          <p className="text-red-500 text-xs mt-1">
-            {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
-          </p>
-        )}
+        {nameTouched && name.length < 2 && (
+  <p className="text-red-500 text-xs mt-1">
+    {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
+  </p>
+)}
       </div>
       <div className="flex justify-between gap-4">
         <input
