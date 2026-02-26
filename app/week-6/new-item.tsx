@@ -1,12 +1,8 @@
 "use client";
+
 import { useState } from "react";
 
-// Define the prop types
-type NewItemProps = {
-  onAddItem: (item: { name: string; quantity: number; category: string }) => void;
-};
-
-export default function NewItem({ onAddItem }: NewItemProps) {
+export default function NewItem({ onAddItem }: { onAddItem: (item: any) => void }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
@@ -14,21 +10,10 @@ export default function NewItem({ onAddItem }: NewItemProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!name || name.length < 2) {
-      return;
-    }
-    
-    // Create the item object
-    const item = {
-      name,
-      quantity,
-      category,
-    };
-    
-    // Call the prop function instead of alerting
-    onAddItem(item);
-    
-    // Reset the form
+    if (name.length < 2) return;
+
+    onAddItem({ name, quantity, category });
+
     setName("");
     setQuantity(1);
     setCategory("produce");
@@ -51,10 +36,10 @@ export default function NewItem({ onAddItem }: NewItemProps) {
           onFocus={() => setNameTouched(false)}
         />
         {nameTouched && name.length < 2 && (
-  <p className="text-red-500 text-xs mt-1">
-    {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
-  </p>
-)}
+          <p className="text-red-500 text-xs mt-1">
+            {name.length === 0 ? "Name is required." : "Name must be at least 2 characters."}
+          </p>
+        )}
       </div>
       <div className="flex justify-between gap-4">
         <input
