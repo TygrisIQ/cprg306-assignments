@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import MealIdeas from "./week-7/meal-ideas";
 export default function Home() {
   return (
     <main className="p-10">
@@ -18,6 +18,9 @@ export default function Home() {
       </p>
       <p className="my-2 text-blue-400 hover:text-blue-300">
         <Link href="/week-6">Go to Week 6 Page</Link>
+      </p>
+      <p className="my-2 text-blue-400 hover:text-blue-300">
+        <Link href="/week-7">Go to Week 7 Page</Link>
       </p>
     </main>
   );
