@@ -1,56 +1,47 @@
 "use client";
-
 import { useState, useEffect } from "react";
 
-const fetchMealIdeas = async (ingredient: string) => {
-  try {
-    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
-    const data = await response.json();
-    return data.meals || [];
-  } catch (error) {
-    console.error("Error fetching meal ideas:", error);
-    return [];
-  }
-};
+async function fetchMealIdeas(ingredient: string) {
+  const response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
+  );
+  const data = await response.json();
+  return data.meals || [];
+}
 
 export default function MealIdeas({ ingredient }: { ingredient: string }) {
-  const [meals, setMeals] = useState<any[]>([]);
+  const [meals, setMeals] = useState<{ idMeal: string; strMeal: string; strMealThumb: string }[]>([]);
 
-  const loadMealIdeas = async () => {
-    if (ingredient) {
-      const fetchedMeals = await fetchMealIdeas(ingredient);
-      setMeals(fetchedMeals);
-    } else {
-      setMeals([]);
-    }
-  };
+  async function loadMealIdeas() {
+    if (!ingredient) return;
+    const results = await fetchMealIdeas(ingredient);
+    setMeals(results);
+  }
 
   useEffect(() => {
     loadMealIdeas();
   }, [ingredient]);
 
   return (
-    <div className="flex-1 mt-4 max-w-md mx-auto w-full">
-      <h2 className="text-2xl font-bold text-white mb-4">Meal Ideas</h2>
-      {ingredient ? (
-        meals.length > 0 ? (
-          <div>
-            <p className="text-white mb-4">Here are some meal ideas using {ingredient}:</p>
-            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {meals.map((meal) => (
-                <li key={meal.idMeal} className="bg-slate-800 p-2 rounded-lg shadow-md hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-center font-semibold mb-2">{meal.strMeal}</p>
-                  <img src={meal.strMealThumb} alt={meal.strMeal} className="w-full h-auto rounded-md" />
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <p className="text-white">No meal ideas found for {ingredient}.</p>
-        )
-      ) : (
-        <p className="text-white">Select an item to see meal ideas.</p>
+    <div className="m-4 p-4 bg-slate-900 rounded-lg max-w-sm w-full">
+      <h2 className="text-xl font-bold text-white mb-3">
+        {ingredient ? `Meal ideas for: ${ingredient}` : "Select an item to see meal ideas"}
+      </h2>
+      {meals.length === 0 && ingredient && (
+        <p className="text-gray-400 text-sm">No meals found.</p>
       )}
+      <ul>
+        {meals.map((meal) => (
+          <li key={meal.idMeal} className="flex items-center gap-3 py-2 border-b border-slate-700 last:border-0">
+            <img
+              src={meal.strMealThumb}
+              alt={meal.strMeal}
+              className="w-12 h-12 rounded-md object-cover"
+            />
+            <span className="text-white text-sm">{meal.strMeal}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
