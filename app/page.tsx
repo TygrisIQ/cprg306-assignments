@@ -22,6 +22,9 @@ export default function Home() {
       <p className="my-2 text-blue-400 hover:text-blue-300">
         <Link href="/week-7">Go to Week 7 Page</Link>
       </p>
+      <p className="my-2 text-blue-400 hover:text-blue-300">
+        <Link href="/week-8">Go to Week 8 Page</Link>
+      </p>
     </main>
   );
 }
