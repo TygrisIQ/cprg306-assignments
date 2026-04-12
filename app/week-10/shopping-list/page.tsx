@@ -11,7 +11,14 @@ import { getItems, addItem, deleteItem } from "../_services/shopping-list-servic
 export default function Page() {
   const { user, firebaseSignOut } = useUserAuth();
   const router = useRouter();
-  const [items, setItems] = useState([]);
+  interface Item {
+  id: string;
+  name: string;
+  quantity: number;
+  category: string;
+}
+
+const [items, setItems] = useState<Item[]>([]);
   const [selectedItemName, setSelectedItemName] = useState("");
 
   const loadItems = async () => {
