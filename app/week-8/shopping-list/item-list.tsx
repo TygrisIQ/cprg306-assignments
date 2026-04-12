@@ -13,7 +13,7 @@ interface ItemProps {
 interface ItemListProps {
   items: ItemProps[];
   onItemSelect: (item: ItemProps) => void;
-  onItemDelete: (itemId: string) => void;
+  onItemDelete?: (itemId: string) => void; // optional with ?
 }
 
 export default function ItemList({ items, onItemSelect, onItemDelete }: ItemListProps) {
@@ -69,11 +69,11 @@ export default function ItemList({ items, onItemSelect, onItemDelete }: ItemList
               <ul className="pl-0">
                 {groupedItems[category].map((item) => (
                   <Item
-                    key={item.id}
-                    {...item}
-                    onSelect={() => onItemSelect(item)}
-                    onDelete={() => onItemDelete(item.id)}
-                  />
+  key={item.id}
+  {...item}
+  onSelect={() => onItemSelect(item)}
+  onDelete={() => onItemDelete?.(item.id)}
+/>
                 ))}
               </ul>
             </div>
@@ -83,11 +83,11 @@ export default function ItemList({ items, onItemSelect, onItemDelete }: ItemList
         <ul className="pl-0">
           {sortedItems.map((item) => (
             <Item
-              key={item.id}
-              {...item}
-              onSelect={() => onItemSelect(item)}
-              onDelete={() => onItemDelete(item.id)}
-            />
+  key={item.id}
+  {...item}
+  onSelect={() => onItemSelect(item)}
+  onDelete={() => onItemDelete?.(item.id)}
+/>
           ))}
         </ul>
       )}
